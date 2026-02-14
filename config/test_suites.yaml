@@ -1,0 +1,81 @@
+# Test Suite Configurations
+
+test_suites:
+  performance:
+    enabled: true
+    tests:
+      - latency
+      - throughput
+      - load
+    config:
+      # Configuration shared by all performance tests
+      requests: 100          # Number of requests for latency test
+      duration: 30           # Duration in seconds for throughput test
+      concurrent: 10         # Concurrent requests for throughput test
+      max_concurrent: 50     # Max concurrent for load test
+      ramp_up_time: 10       # Ramp-up time for load test
+      sustained_time: 20     # Sustained load time
+      path: "/"              # Path to test
+
+  features:
+    enabled: true
+    tests:
+      - rate_limiting
+      - authentication
+      - routing
+      # - transformation  # Requires specific configuration
+    config:
+      # Rate limiting test
+      rate_limit_requests: 20
+
+      # Authentication test
+      auth_header: "Authorization"
+      # valid_token: ""      # Uncomment and set for valid auth testing
+      invalid_token: "invalid_token"
+
+      # Routing test
+      paths:
+        - "/"
+        - "/api/v1"
+        - "/health"
+
+  reliability:
+    enabled: true
+    tests:
+      - error_handling
+      # - retry             # Requires specific configuration
+      # - circuit_breaker   # Requires specific configuration
+    config:
+      error_paths:
+        - "/error/500"
+        - "/error/404"
+        - "/timeout"
+
+  security:
+    enabled: true
+    tests:
+      - tls
+      # - auth              # Covered by features/authentication
+      - cors
+    config:
+      # CORS test
+      cors_path: "/"
+
+  configuration:
+    enabled: true
+    tests:
+      - setup_complexity
+      - api_flexibility
+    config: {}
+
+# Test-specific overrides
+# You can override config for specific tests
+
+test_overrides:
+  latency:
+    requests: 50
+    path: "/api/health"
+
+  throughput:
+    duration: 20
+    concurrent: 5

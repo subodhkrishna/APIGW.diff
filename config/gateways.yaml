@@ -1,0 +1,54 @@
+# API Gateway Configurations
+# Environment variables can be referenced using ${VAR_NAME} syntax
+
+gateways:
+  kong:
+    enabled: false
+    proxy_url: "${KONG_PROXY_URL:https://kong.example.com}"
+    admin_url: "${KONG_ADMIN_URL:https://kong-admin.example.com}"
+    credentials:
+      api_key: "${KONG_API_KEY:}"
+
+  aws_api_gateway:
+    enabled: false
+    # Option 1: Provide full URL
+    url: "${AWS_API_GATEWAY_URL:}"
+    # Option 2: Provide API ID and region (URL will be constructed)
+    region: "${AWS_REGION:us-east-1}"
+    api_id: "${AWS_API_ID:}"
+    stage: "${AWS_STAGE:prod}"
+    credentials:
+      api_key: "${AWS_API_KEY:}"
+      # AWS credentials can also use default credential chain
+
+  nginx:
+    enabled: false
+    url: "${NGINX_URL:https://nginx.example.com}"
+    api_url: "${NGINX_API_URL:}"  # Optional NGINX Plus API
+
+  traefik:
+    enabled: false
+    url: "${TRAEFIK_URL:https://traefik.example.com}"
+    api_url: "${TRAEFIK_API_URL:https://traefik-api.example.com}"
+
+  envoy:
+    enabled: false
+    url: "${ENVOY_URL:https://envoy.example.com}"
+    admin_url: "${ENVOY_ADMIN_URL:https://envoy-admin.example.com}"
+
+# Example local testing configuration
+# Uncomment and modify for local testing
+
+  # local_nginx:
+  #   enabled: true
+  #   url: "http://localhost:8080"
+
+  # local_kong:
+  #   enabled: true
+  #   proxy_url: "http://localhost:8000"
+  #   admin_url: "http://localhost:8001"
+
+  # Public testing service for verification
+  httpbin:
+    enabled: true
+    url: "https://httpbin.org"
